@@ -133,7 +133,9 @@ rm ./ESXiTri_<hostname>_<date>_<time>.tar.gz
 
 #### Testing:
 - Tested on VMware ESXi, Version 6.5.0d (Release Name 6.5.0._ESXi 6.5.0d - Release Date 2017/04/18 - Build No 5310538)
-- If a persistent scratch location is configured, you may need to manually collect the logs due to the use of symlinks from the scratch location. Review the vmsyslog.conf log configuration to determine file path or run a search using the below command:
+
+#### Limitations:
+- If a persistent scratch location is configured, you may need to manually collect some logs from the scatch location, due to the use of symlinks. Further information on this topic can be found [here](https://download3.vmware.com/vcat/vmw-vcloud-architecture-toolkit-spv1-webworks/index.html#page/Cloud%20Operations%20and%20Management/Architecting%20a%20vRealize%20Log%20Insight%20Solution/Architecting%20a%20vRealize%20Log%20Insight%20Solution.2.05.html). Review the vmsyslog.conf log configuration to determine file path or run a search using the below command:
 ```
 find / -name "auth.log"
 ```
