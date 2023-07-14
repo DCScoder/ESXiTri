@@ -103,7 +103,7 @@ File System:
 
 #### Usage:
 
-Step 1: Copy ESXiTri.sh to target host.
+Step 1: Copy ESXiTri.sh to the root of the target host file system.
 
 Step 2: Set script permissions to execute:
 
@@ -133,3 +133,7 @@ rm ./ESXiTri_<hostname>_<date>_<time>.tar.gz
 
 #### Testing:
 - Tested on VMware ESXi, Version 6.5.0d (Release Name 6.5.0._ESXi 6.5.0d - Release Date 2017/04/18 - Build No 5310538)
+- If a persistent scratch location is configured, you may need to manually collect the logs due to the use of symlinks from the scratch location. Review the vmsyslog.conf log configuration to determine file path or run a search using the below command:
+```
+find / -name "auth.log"
+```
