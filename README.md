@@ -103,7 +103,7 @@ File System:
 
 #### Usage:
 
-Step 1: Copy ESXiTri.sh to the root of the target host file system.
+Step 1: Copy ESXiTri.sh to the root of the target host file system via your preferred method i.e., SCP.
 
 Step 2: Set script permissions to execute:
 
@@ -117,7 +117,7 @@ Step 3: Execute script:
 ./ESXiTri.sh
 ```
 
-Step 4: Download resultant (*.tar.gz) archive file via your preferred method.
+Step 4: Download resultant (*.tar.gz) archive file via your preferred method i.e., SCP.
 
 Step 5: Delete script and archive file from host:
 
