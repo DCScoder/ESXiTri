@@ -2,7 +2,7 @@
 ###################################################################################
 #
 #    Script:    ESXiTri.sh
-#    Version:   1.2
+#    Version:   1.3
 #    Author:    Dan Saunders
 #    Contact:   dcscoder@gmail.com
 #    Purpose:   ESXi Cyber Security Incident Response Script (Shell)
@@ -23,7 +23,7 @@
 #
 ###################################################################################
 
-Version='v1.2'
+Version='v1.3'
 
 ########## Startup ##########
 
@@ -270,6 +270,8 @@ cat /etc/vmsyslog.conf > $Triage/Logs/vmsyslog.conf
 tar -zcf $Triage/Logs/var_log.tar.gz var/log
 # /var/run/*
 tar -zcf $Triage/Logs/var_run.tar.gz var/run
+# Scratch Path
+tar -zcf $Triage/Logs/scratch_log.tar.gz scratch/log
 
 ########## File System ##########
 
