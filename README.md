@@ -91,6 +91,7 @@ Logs:
 - vmsyslog Configuration
 - /var/log/*
 - /var/run/*
+- /scratch/log/*
 
 File System:
 
