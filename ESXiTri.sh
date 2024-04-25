@@ -2,7 +2,7 @@
 ###################################################################################
 #
 #    Script:    ESXiTri.sh
-#    Version:   1.3
+#    Version:   1.4
 #    Author:    Dan Saunders
 #    Contact:   dcscoder@gmail.com
 #    Purpose:   ESXi Cyber Security Incident Response Script (Shell)
@@ -23,7 +23,7 @@
 #
 ###################################################################################
 
-Version='v1.3'
+Version='v1.4'
 
 ########## Startup ##########
 
@@ -252,8 +252,6 @@ cat /etc/passwd > $Triage/Accounts/passwd
 cat /etc/shadow > $Triage/Accounts/shadow
 # User Groups
 cat /etc/group > $Triage/Accounts/group
-# Ash History
-cp -rfp .ash_history $Triage/Accounts
 
 ########## Logs ##########
 
@@ -263,15 +261,21 @@ echo "
 # Directory Structure
 mkdir $Triage/Logs
 chmod 777 $Triage/Logs
+mkdir $Triage/Logs/Archived
+chmod 777 $Triage/Logs/Archived
 
 # vmsyslog Configuration
 cat /etc/vmsyslog.conf > $Triage/Logs/vmsyslog.conf
 # /var/log/*
-tar -zcf $Triage/Logs/var_log.tar.gz var/log
+tar -hzcf $Triage/Logs/var_log.tar.gz /var/log
 # /var/run/*
-tar -zcf $Triage/Logs/var_run.tar.gz var/run
+tar -hzcf $Triage/Logs/var_run.tar.gz /var/run
 # Scratch Path
-tar -zcf $Triage/Logs/scratch_log.tar.gz scratch/log
+tar -hzcf $Triage/Logs/scratch_log.tar.gz /scratch/log
+# Archived Logs VMFS
+find /vmfs/volumes/ -name "*.gz" -exec cp "{}" $Triage/Logs/Archived/ \;
+# Ash History
+cp -rfp /.ash_history $Triage/Logs
 
 ########## File System ##########
 
@@ -282,10 +286,14 @@ echo "
 mkdir $Triage/FileSystem
 chmod 777 $Triage/FileSystem
 
+# root Binary Hashes
+find / -maxdepth 1 -type f -exec md5sum {} \; > $Triage/FileSystem/root_MD5_Hashes.txt
 # bin Binary Hashes
 find /bin -type f -exec md5sum {} \; > $Triage/FileSystem/bin_MD5_Hashes.txt
 # tmp File Hashes
 find /tmp -type f -exec md5sum {} \; > $Triage/FileSystem/tmp_MD5_Hashes.txt
+# Root Directory Listing
+find / -maxdepth 1 -print0 | xargs -0 stat  > $Triage/FileSystem/root_Dir_Listing.txt
 # bin Directory Listing
 find /bin -print0 | xargs -0 stat > $Triage/FileSystem/bin_Dir_Listing.txt
 # tmp Directory Listing
@@ -293,7 +301,7 @@ find /tmp -print0 | xargs -0 stat > $Triage/FileSystem/tmp_Dir_Listing.txt
 # etc Directory Listing
 find /etc -print0 | xargs -0 stat > $Triage/FileSystem/etc_Dir_Listing.txt
 # tmp File Collection
-tar -zcf $Triage/FileSystem/tmp.tar.gz tmp
+tar -zcf $Triage/FileSystem/tmp.tar.gz /tmp
 
 ########## Organise Collection ##########
 
