@@ -107,7 +107,7 @@ File System:
 
 #### Usage:
 
-Step 1: Copy ESXiTri.sh to the root of the target host file system via your preferred method i.e., SCP.
+Step 1: Copy ESXiTri.sh to the target host file system via your preferred method i.e., SCP.
 
 Step 2: Set script permissions to execute:
 
