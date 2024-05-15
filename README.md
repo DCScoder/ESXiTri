@@ -107,7 +107,7 @@ File System:
 
 #### Usage:
 
-Step 1: Copy ESXiTri.sh to the target host file system via your preferred method i.e., SCP.
+Step 1: Copy ESXiTri.sh to the target host /tmp/ directory path via your preferred method i.e., SCP.
 
 Step 2: Set script permissions to execute:
 
@@ -136,4 +136,5 @@ rm ./ESXiTri_<hostname>_<date>_<time>.tar.gz
 - ESXCLI and native Linux tools are leveraged. No third-party tools are required.
 
 #### Testing:
-- Tested on VMware ESXi, Version 6.5.0d (Release Name 6.5.0._ESXi 6.5.0d - Release Date 2017/04/18 - Build No 5310538)
+- Tested on VMware ESXi, Version 6.5.0d (Release Name 6.5.0._ESXi 6.5.0d - Release Date 2017/04/18 - Build No 5310538).
+- Ensure you run the script from '/tmp/' and not '/' otherwise ESXi ramdisk root will get full and result in a 0 bytes collection.
