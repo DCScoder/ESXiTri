@@ -2,7 +2,7 @@
 ###################################################################################
 #
 #    Script:    ESXiTri.sh
-#    Version:   1.4
+#    Version:   1.5
 #    Author:    Dan Saunders
 #    Contact:   dcscoder@gmail.com
 #    Purpose:   ESXi Cyber Security Incident Response Script (Shell)
@@ -23,7 +23,7 @@
 #
 ###################################################################################
 
-Version='v1.4'
+Version='v1.5'
 
 ########## Startup ##########
 
@@ -92,10 +92,36 @@ esxcli system process list > $Triage/Memory/Process_List.txt
 # Open Files
 lsof > $Triage/Memory/Open_Files.txt
 
+########## File System ##########
+
+echo "
+(Task 3 / 9) Gather file system information / Sammeln von Dateisysteminformationen."
+
+# Directory Structure
+mkdir $Triage/FileSystem
+chmod 777 $Triage/FileSystem
+
+# tmp File Collection
+tar -zcf $Triage/FileSystem/tmp.tar.gz /tmp
+# root Binary Hashes
+find / -maxdepth 1 -type f -exec md5sum {} \; > $Triage/FileSystem/root_MD5_Hashes.txt
+# bin Binary Hashes
+find /bin -type f -exec md5sum {} \; > $Triage/FileSystem/bin_MD5_Hashes.txt
+# tmp File Hashes
+find /tmp -type f -exec md5sum {} \; > $Triage/FileSystem/tmp_MD5_Hashes.txt
+# Root Directory Listing
+find / -maxdepth 1 -print0 | xargs -0 stat  > $Triage/FileSystem/root_Dir_Listing.txt
+# bin Directory Listing
+find /bin -print0 | xargs -0 stat > $Triage/FileSystem/bin_Dir_Listing.txt
+# tmp Directory Listing
+find /tmp -print0 | xargs -0 stat > $Triage/FileSystem/tmp_Dir_Listing.txt
+# etc Directory Listing
+find /etc -print0 | xargs -0 stat > $Triage/FileSystem/etc_Dir_Listing.txt
+
 ########## Configuration ##########
 
 echo "
-(Task 3 / 9) Gather system information / Sammeln von Systeminformationen."
+(Task 4 / 9) Gather system information / Sammeln von Systeminformationen."
 
 # Directory Structure
 mkdir $Triage/Configuration
@@ -159,7 +185,7 @@ cp -rfp /etc/rc.local.d $Triage/Configuration/rc.local.d
 ########## Network ##########
 
 echo "
-(Task 4 / 9) Gather network information / Sammeln von Netzwerkinformationen."
+(Task 5 / 9) Gather network information / Sammeln von Netzwerkinformationen."
 
 # Directory Structure
 mkdir $Triage/Network
@@ -207,7 +233,7 @@ cp -rfp /etc/ssh $Triage/Network
 ########## Storage ##########
 
 echo "
-(Task 5 / 9) Gather storage information / Sammeln von Lagerungsinformationen."
+(Task 6 / 9) Gather storage information / Sammeln von Lagerungsinformationen."
 
 mkdir $Triage/Storage
 chmod 777 $Triage/Storage
@@ -236,7 +262,7 @@ fdisk -lu > $Triage/Storage/fdisk.txt
 ########## Accounts ##########
 
 echo "
-(Task 6 / 9) Gather account information / Kontoinformationen sammeln."
+(Task 7 / 9) Gather account information / Kontoinformationen sammeln."
 
 # Directory Structure
 mkdir $Triage/Accounts
@@ -256,7 +282,7 @@ cat /etc/group > $Triage/Accounts/group
 ########## Logs ##########
 
 echo "
-(Task 7 / 9) Gather log information / Sammeln von Protokollinformationen."
+(Task 8 / 9) Gather log information / Sammeln von Protokollinformationen."
 
 # Directory Structure
 mkdir $Triage/Logs
@@ -276,32 +302,6 @@ tar -hzcf $Triage/Logs/scratch_log.tar.gz /scratch/log
 find /vmfs/volumes/ -name "*.gz" -exec cp "{}" $Triage/Logs/Archived/ \;
 # Ash History
 cp -rfp /.ash_history $Triage/Logs
-
-########## File System ##########
-
-echo "
-(Task 8 / 9) Gather file system information / Sammeln von Dateisysteminformationen."
-
-# Directory Structure
-mkdir $Triage/FileSystem
-chmod 777 $Triage/FileSystem
-
-# root Binary Hashes
-find / -maxdepth 1 -type f -exec md5sum {} \; > $Triage/FileSystem/root_MD5_Hashes.txt
-# bin Binary Hashes
-find /bin -type f -exec md5sum {} \; > $Triage/FileSystem/bin_MD5_Hashes.txt
-# tmp File Hashes
-find /tmp -type f -exec md5sum {} \; > $Triage/FileSystem/tmp_MD5_Hashes.txt
-# Root Directory Listing
-find / -maxdepth 1 -print0 | xargs -0 stat  > $Triage/FileSystem/root_Dir_Listing.txt
-# bin Directory Listing
-find /bin -print0 | xargs -0 stat > $Triage/FileSystem/bin_Dir_Listing.txt
-# tmp Directory Listing
-find /tmp -print0 | xargs -0 stat > $Triage/FileSystem/tmp_Dir_Listing.txt
-# etc Directory Listing
-find /etc -print0 | xargs -0 stat > $Triage/FileSystem/etc_Dir_Listing.txt
-# tmp File Collection
-tar -zcf $Triage/FileSystem/tmp.tar.gz /tmp
 
 ########## Organise Collection ##########
 
